@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { ChatbotDocumentPicker } from "@/components/chatbots/chatbot-document-picker";
+import { UploadDropzone } from "@/components/documents/upload-dropzone";
 import { toast } from "sonner";
 
 interface Chatbot {
@@ -25,6 +26,7 @@ export default function ChatbotSettingsPage() {
   const [description, setDescription] = useState("");
   const [systemPrompt, setSystemPrompt] = useState("");
   const [saving, setSaving] = useState(false);
+  const [pickerKey, setPickerKey] = useState(0);
 
   useEffect(() => {
     fetch(`/api/chatbots/${chatbotId}`)
@@ -87,9 +89,23 @@ export default function ChatbotSettingsPage() {
 
       <Separator />
 
-      <section>
-        <h2 className="mb-4 text-lg font-semibold">Documents</h2>
-        <ChatbotDocumentPicker chatbotId={chatbotId} />
+      <section className="space-y-6">
+        <h2 className="text-lg font-semibold">Knowledge Base</h2>
+
+        <div>
+          <p className="mb-2 text-sm text-muted-foreground">Upload new documents</p>
+          <UploadDropzone
+            onUploadComplete={() => {
+              toast.success("File uploaded, processing...");
+              setPickerKey((k) => k + 1);
+            }}
+          />
+        </div>
+
+        <div>
+          <p className="mb-2 text-sm text-muted-foreground">Select documents to include</p>
+          <ChatbotDocumentPicker key={pickerKey} chatbotId={chatbotId} />
+        </div>
       </section>
     </div>
   );

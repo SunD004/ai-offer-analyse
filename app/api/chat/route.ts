@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
           .join("") ||
         "",
     }))
-    .filter((m) => m.content.length > 0);
+    .filter((m: { role: "user" | "assistant"; content: string }) => m.content.length > 0);
 
   const { stream, text } = generateChatResponse(
     chatMessages,
