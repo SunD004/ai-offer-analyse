@@ -75,7 +75,7 @@ export function generateChatResponse(
       webSearch: tool({
         description:
           "Search the web for current or real-time information. You MUST provide the 'query' parameter with the exact search terms to look up.",
-        parameters: z.object({
+        inputSchema: z.object({
           query: z
             .string()
             .min(1)
