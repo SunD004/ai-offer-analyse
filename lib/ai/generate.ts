@@ -1,6 +1,6 @@
 import { streamText, tool, stepCountIs } from "ai";
 import { createMistral } from "@ai-sdk/mistral";
-import { z } from "zod";
+import { z } from "zod/v4";
 import { RetrievedChunk } from "./retriever";
 import { searchWeb } from "./web-search";
 
