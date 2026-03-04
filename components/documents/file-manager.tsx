@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { LayoutGrid, List, FileText, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { UploadDropzone } from "./upload-dropzone";
 import { FileCard } from "./file-card";
@@ -50,14 +50,51 @@ export function FileManager() {
     fetchFolders();
   }, [fetchDocuments, fetchFolders]);
 
+  const prevDocsRef = useRef<Document[]>([]);
+  useEffect(() => {
+    const prev = prevDocsRef.current;
+    if (prev.length > 0) {
+      const newlyReady = documents.filter((d) => {
+        const old = prev.find((p) => p.id === d.id);
+        return (
+          d.status === "READY" &&
+          old &&
+          (old.status === "PENDING" || old.status === "PROCESSING")
+        );
+      });
+      const newlyErrored = documents.filter((d) => {
+        const old = prev.find((p) => p.id === d.id);
+        return (
+          d.status === "ERROR" &&
+          old &&
+          (old.status === "PENDING" || old.status === "PROCESSING")
+        );
+      });
+      if (newlyReady.length === 1) {
+        toast.success(`"${newlyReady[0].originalName}" prêt`);
+      } else if (newlyReady.length > 1) {
+        toast.success(`${newlyReady.length} documents prêts`);
+      }
+      if (newlyErrored.length > 0) {
+        toast.error(
+          `${newlyErrored.length} document${newlyErrored.length > 1 ? "s" : ""} en erreur`
+        );
+      }
+    }
+    prevDocsRef.current = documents;
+  }, [documents]);
+
   useEffect(() => {
     const hasProcessing = documents.some(
       (d) => d.status === "PENDING" || d.status === "PROCESSING"
     );
     if (!hasProcessing) return;
-    const interval = setInterval(fetchDocuments, 3000);
+    const interval = setInterval(() => {
+      fetchDocuments();
+      fetchFolders();
+    }, 3000);
     return () => clearInterval(interval);
-  }, [documents, fetchDocuments]);
+  }, [documents, fetchDocuments, fetchFolders]);
 
   const handleDelete = async (id: string) => {
     await fetch(`/api/documents/${id}`, { method: "DELETE" });
