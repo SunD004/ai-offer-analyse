@@ -9,13 +9,16 @@ export interface RetrievedChunk {
 export async function retrieveRelevantChunks(
   query: string,
   documentIds: string[],
-  topK = 5
+  topK?: number
 ): Promise<RetrievedChunk[]> {
   if (documentIds.length === 0) return [];
 
+  // Scale with document count: at least 4 chunks per document, capped at 30
+  const k = topK ?? Math.min(30, Math.max(8, documentIds.length * 4));
+
   const vectorStore = await getVectorStore();
 
-  const results = await vectorStore.similaritySearchWithScore(query, topK, {
+  const results = await vectorStore.similaritySearchWithScore(query, k, {
     documentId: { in: documentIds },
   });
 
