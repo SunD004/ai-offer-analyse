@@ -27,7 +27,9 @@ export async function processDocument(documentId: string): Promise<void> {
     });
 
     // Step 2: Split text into chunks
-    const chunks = await splitText(text, { documentId });
+    const ext = document.filename.split(".").pop()?.toLowerCase();
+    const tabular = ext === "xlsx" || ext === "csv";
+    const chunks = await splitText(text, { documentId }, { tabular });
 
     // Step 3: Save chunks to Prisma
     await prisma.documentChunk.createMany({
