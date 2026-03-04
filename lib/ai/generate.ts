@@ -3,6 +3,7 @@ import { createMistral } from "@ai-sdk/mistral";
 import { z } from "zod/v4";
 import { RetrievedChunk } from "./retriever";
 import { searchWeb } from "./web-search";
+import { buildMarketPrompt, type MarketConfig } from "@/lib/market-config";
 
 const mistral = createMistral({
   apiKey: process.env.MISTRAL_API_KEY,
@@ -24,7 +25,8 @@ export const WEB_SEARCH_END = "<<<WEB_SEARCH_END>>>";
 
 export function buildContextPrompt(
   chunks: RetrievedChunk[],
-  systemPrompt: string
+  systemPrompt: string,
+  marketConfig?: MarketConfig | null
 ): string {
   const webSearchInstruction = `
 You also have access to a \`webSearch\` tool. Use it when:
@@ -40,8 +42,10 @@ Always format your responses in Markdown:
 - Use tables when comparing multiple items
 - Keep paragraphs short and readable`;
 
+  const marketPrompt = marketConfig ? "\n" + buildMarketPrompt(marketConfig) : "";
+
   if (chunks.length === 0) {
-    return `${systemPrompt}${webSearchInstruction}
+    return `${systemPrompt}${marketPrompt}${webSearchInstruction}
 
 No relevant document context was found. Use webSearch if needed, or let the user know you don't have enough context.`;
   }
@@ -53,7 +57,7 @@ No relevant document context was found. Use webSearch if needed, or let the user
     )
     .join("\n\n");
 
-  return `${systemPrompt}${webSearchInstruction}
+  return `${systemPrompt}${marketPrompt}${webSearchInstruction}
 
 Use the following document context to answer the user's question. Reference sources using [Source N] notation when citing information.
 
@@ -70,9 +74,10 @@ Instructions:
 export function generateChatResponse(
   messages: { role: "user" | "assistant"; content: string }[],
   chunks: RetrievedChunk[],
-  systemPrompt: string
+  systemPrompt: string,
+  marketConfig?: MarketConfig | null
 ): { stream: ReadableStream<Uint8Array>; text: Promise<string> } {
-  const system = buildContextPrompt(chunks, systemPrompt);
+  const system = buildContextPrompt(chunks, systemPrompt, marketConfig);
 
   // Fallback: use the last user message content if the model fails to provide a query
   const lastUserMessage =

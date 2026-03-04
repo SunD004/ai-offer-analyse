@@ -9,13 +9,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { ChatbotDocumentPicker } from "@/components/chatbots/chatbot-document-picker";
 import { UploadDropzone } from "@/components/documents/upload-dropzone";
+import { MarketConfigForm } from "@/components/chatbots/market-config-form";
 import { toast } from "sonner";
+import type { MarketConfig } from "@/lib/market-config";
 
 interface Chatbot {
   id: string;
   name: string;
   description: string | null;
   systemPrompt: string;
+  marketConfig: MarketConfig | null;
 }
 
 export default function ChatbotSettingsPage() {
@@ -106,6 +109,26 @@ export default function ChatbotSettingsPage() {
           <p className="mb-2 text-sm text-muted-foreground">Select documents to include</p>
           <ChatbotDocumentPicker key={pickerKey} chatbotId={chatbotId} />
         </div>
+      </section>
+
+      <Separator />
+
+      <section className="space-y-4">
+        <h2 className="text-lg font-semibold">Configuration Marché</h2>
+        <p className="text-sm text-muted-foreground">
+          Configurez les paramètres de chiffrage pour que l&apos;IA utilise vos données marché (surfaces, cadences, taux) dans ses réponses.
+        </p>
+        <MarketConfigForm
+          initialConfig={chatbot.marketConfig}
+          onSave={async (marketConfig) => {
+            await fetch(`/api/chatbots/${chatbotId}`, {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ marketConfig }),
+            });
+            toast.success("Configuration marché enregistrée");
+          }}
+        />
       </section>
     </div>
   );

@@ -1,8 +1,8 @@
 import { prisma } from "@/lib/prisma";
-import { extractTextFromFile } from "@/lib/ai/ocr";
+import { extractTextFromBuffer } from "@/lib/ai/ocr";
 import { splitText } from "@/lib/ai/splitter";
 import { getVectorStore } from "@/lib/ai/vectorstore";
-import { getFilePath } from "./storage";
+import { getFileBuffer } from "./storage";
 import { Document as LCDocument } from "@langchain/core/documents";
 
 export async function processDocument(documentId: string): Promise<void> {
@@ -16,10 +16,10 @@ export async function processDocument(documentId: string): Promise<void> {
       where: { id: documentId },
     });
 
-    const filePath = getFilePath(document.filename);
+    const buffer = await getFileBuffer(document.filename);
 
     // Step 1: OCR / text extraction
-    const text = await extractTextFromFile(filePath);
+    const text = await extractTextFromBuffer(buffer, document.filename);
 
     await prisma.document.update({
       where: { id: documentId },

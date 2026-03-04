@@ -72,6 +72,18 @@ export function FileManager() {
     fetchDocuments();
   };
 
+  const handleDeleteFolder = async (folderId: string) => {
+    const res = await fetch(`/api/folders/${folderId}`, { method: "DELETE" });
+    if (!res.ok) {
+      toast.error("Failed to delete folder");
+      return;
+    }
+    toast.success("Folder deleted");
+    if (selectedFolderId === folderId) setSelectedFolderId(null);
+    fetchDocuments();
+    fetchFolders();
+  };
+
   const handleCreateFolder = async (name: string, parentId: string | null) => {
     await fetch("/api/folders", {
       method: "POST",
@@ -94,6 +106,7 @@ export function FileManager() {
           selectedFolderId={selectedFolderId}
           onSelectFolder={setSelectedFolderId}
           onCreateFolder={handleCreateFolder}
+          onDeleteFolder={handleDeleteFolder}
         />
       </div>
 

@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { marketConfigSchema } from "@/lib/market-config";
 
 const createChatbotSchema = z.object({
   name: z.string().min(1).max(255),
   description: z.string().optional(),
   systemPrompt: z.string().optional(),
+  marketConfig: marketConfigSchema.optional().nullable(),
 });
 
 export async function GET() {
@@ -27,8 +29,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }
 
+  const { marketConfig, ...rest } = parsed.data;
   const chatbot = await prisma.chatbot.create({
-    data: parsed.data,
+    data: {
+      ...rest,
+      ...(marketConfig && { marketConfig }),
+    },
   });
 
   return NextResponse.json(chatbot, { status: 201 });

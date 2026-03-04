@@ -47,6 +47,7 @@ export type ChatbotCountAggregateOutputType = {
   name: number
   description: number
   systemPrompt: number
+  marketConfig: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -76,6 +77,7 @@ export type ChatbotCountAggregateInputType = {
   name?: true
   description?: true
   systemPrompt?: true
+  marketConfig?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -158,6 +160,7 @@ export type ChatbotGroupByOutputType = {
   name: string
   description: string | null
   systemPrompt: string
+  marketConfig: runtime.JsonValue | null
   createdAt: Date
   updatedAt: Date
   _count: ChatbotCountAggregateOutputType | null
@@ -188,6 +191,7 @@ export type ChatbotWhereInput = {
   name?: Prisma.StringFilter<"Chatbot"> | string
   description?: Prisma.StringNullableFilter<"Chatbot"> | string | null
   systemPrompt?: Prisma.StringFilter<"Chatbot"> | string
+  marketConfig?: Prisma.JsonNullableFilter<"Chatbot">
   createdAt?: Prisma.DateTimeFilter<"Chatbot"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Chatbot"> | Date | string
   documents?: Prisma.ChatbotDocumentListRelationFilter
@@ -199,6 +203,7 @@ export type ChatbotOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   systemPrompt?: Prisma.SortOrder
+  marketConfig?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   documents?: Prisma.ChatbotDocumentOrderByRelationAggregateInput
@@ -213,6 +218,7 @@ export type ChatbotWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"Chatbot"> | string
   description?: Prisma.StringNullableFilter<"Chatbot"> | string | null
   systemPrompt?: Prisma.StringFilter<"Chatbot"> | string
+  marketConfig?: Prisma.JsonNullableFilter<"Chatbot">
   createdAt?: Prisma.DateTimeFilter<"Chatbot"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Chatbot"> | Date | string
   documents?: Prisma.ChatbotDocumentListRelationFilter
@@ -224,6 +230,7 @@ export type ChatbotOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   systemPrompt?: Prisma.SortOrder
+  marketConfig?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ChatbotCountOrderByAggregateInput
@@ -239,6 +246,7 @@ export type ChatbotScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Chatbot"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Chatbot"> | string | null
   systemPrompt?: Prisma.StringWithAggregatesFilter<"Chatbot"> | string
+  marketConfig?: Prisma.JsonNullableWithAggregatesFilter<"Chatbot">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Chatbot"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Chatbot"> | Date | string
 }
@@ -248,6 +256,7 @@ export type ChatbotCreateInput = {
   name: string
   description?: string | null
   systemPrompt?: string
+  marketConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   documents?: Prisma.ChatbotDocumentCreateNestedManyWithoutChatbotInput
@@ -259,6 +268,7 @@ export type ChatbotUncheckedCreateInput = {
   name: string
   description?: string | null
   systemPrompt?: string
+  marketConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   documents?: Prisma.ChatbotDocumentUncheckedCreateNestedManyWithoutChatbotInput
@@ -270,6 +280,7 @@ export type ChatbotUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   systemPrompt?: Prisma.StringFieldUpdateOperationsInput | string
+  marketConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.ChatbotDocumentUpdateManyWithoutChatbotNestedInput
@@ -281,6 +292,7 @@ export type ChatbotUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   systemPrompt?: Prisma.StringFieldUpdateOperationsInput | string
+  marketConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.ChatbotDocumentUncheckedUpdateManyWithoutChatbotNestedInput
@@ -292,6 +304,7 @@ export type ChatbotCreateManyInput = {
   name: string
   description?: string | null
   systemPrompt?: string
+  marketConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -301,6 +314,7 @@ export type ChatbotUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   systemPrompt?: Prisma.StringFieldUpdateOperationsInput | string
+  marketConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -310,6 +324,7 @@ export type ChatbotUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   systemPrompt?: Prisma.StringFieldUpdateOperationsInput | string
+  marketConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -319,6 +334,7 @@ export type ChatbotCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   systemPrompt?: Prisma.SortOrder
+  marketConfig?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -379,6 +395,7 @@ export type ChatbotCreateWithoutDocumentsInput = {
   name: string
   description?: string | null
   systemPrompt?: string
+  marketConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   conversations?: Prisma.ConversationCreateNestedManyWithoutChatbotInput
@@ -389,6 +406,7 @@ export type ChatbotUncheckedCreateWithoutDocumentsInput = {
   name: string
   description?: string | null
   systemPrompt?: string
+  marketConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutChatbotInput
@@ -415,6 +433,7 @@ export type ChatbotUpdateWithoutDocumentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   systemPrompt?: Prisma.StringFieldUpdateOperationsInput | string
+  marketConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   conversations?: Prisma.ConversationUpdateManyWithoutChatbotNestedInput
@@ -425,6 +444,7 @@ export type ChatbotUncheckedUpdateWithoutDocumentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   systemPrompt?: Prisma.StringFieldUpdateOperationsInput | string
+  marketConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutChatbotNestedInput
@@ -435,6 +455,7 @@ export type ChatbotCreateWithoutConversationsInput = {
   name: string
   description?: string | null
   systemPrompt?: string
+  marketConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   documents?: Prisma.ChatbotDocumentCreateNestedManyWithoutChatbotInput
@@ -445,6 +466,7 @@ export type ChatbotUncheckedCreateWithoutConversationsInput = {
   name: string
   description?: string | null
   systemPrompt?: string
+  marketConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   documents?: Prisma.ChatbotDocumentUncheckedCreateNestedManyWithoutChatbotInput
@@ -471,6 +493,7 @@ export type ChatbotUpdateWithoutConversationsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   systemPrompt?: Prisma.StringFieldUpdateOperationsInput | string
+  marketConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.ChatbotDocumentUpdateManyWithoutChatbotNestedInput
@@ -481,6 +504,7 @@ export type ChatbotUncheckedUpdateWithoutConversationsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   systemPrompt?: Prisma.StringFieldUpdateOperationsInput | string
+  marketConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.ChatbotDocumentUncheckedUpdateManyWithoutChatbotNestedInput
@@ -531,6 +555,7 @@ export type ChatbotSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   name?: boolean
   description?: boolean
   systemPrompt?: boolean
+  marketConfig?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   documents?: boolean | Prisma.Chatbot$documentsArgs<ExtArgs>
@@ -543,6 +568,7 @@ export type ChatbotSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   name?: boolean
   description?: boolean
   systemPrompt?: boolean
+  marketConfig?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["chatbot"]>
@@ -552,6 +578,7 @@ export type ChatbotSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   name?: boolean
   description?: boolean
   systemPrompt?: boolean
+  marketConfig?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["chatbot"]>
@@ -561,11 +588,12 @@ export type ChatbotSelectScalar = {
   name?: boolean
   description?: boolean
   systemPrompt?: boolean
+  marketConfig?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ChatbotOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "systemPrompt" | "createdAt" | "updatedAt", ExtArgs["result"]["chatbot"]>
+export type ChatbotOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "systemPrompt" | "marketConfig" | "createdAt" | "updatedAt", ExtArgs["result"]["chatbot"]>
 export type ChatbotInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   documents?: boolean | Prisma.Chatbot$documentsArgs<ExtArgs>
   conversations?: boolean | Prisma.Chatbot$conversationsArgs<ExtArgs>
@@ -585,6 +613,7 @@ export type $ChatbotPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     name: string
     description: string | null
     systemPrompt: string
+    marketConfig: runtime.JsonValue | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["chatbot"]>
@@ -1016,6 +1045,7 @@ export interface ChatbotFieldRefs {
   readonly name: Prisma.FieldRef<"Chatbot", 'String'>
   readonly description: Prisma.FieldRef<"Chatbot", 'String'>
   readonly systemPrompt: Prisma.FieldRef<"Chatbot", 'String'>
+  readonly marketConfig: Prisma.FieldRef<"Chatbot", 'Json'>
   readonly createdAt: Prisma.FieldRef<"Chatbot", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Chatbot", 'DateTime'>
 }

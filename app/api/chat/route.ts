@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { retrieveRelevantChunks } from "@/lib/ai/retriever";
 import { generateChatResponse } from "@/lib/ai/generate";
+import { marketConfigSchema, type MarketConfig } from "@/lib/market-config";
 
 export async function POST(request: NextRequest) {
   const { messages, chatbotId, conversationId } = await request.json();
@@ -88,10 +89,18 @@ export async function POST(request: NextRequest) {
     .filter((m: { role: "user" | "assistant"; content: string }) => m.content.length > 0)
     .slice(-10); // Keep last 10 messages to stay within token limits
 
+  // Parse marketConfig if present
+  let marketConfig: MarketConfig | null = null;
+  if (chatbot.marketConfig) {
+    const parsed = marketConfigSchema.safeParse(chatbot.marketConfig);
+    if (parsed.success) marketConfig = parsed.data;
+  }
+
   const { stream, text } = generateChatResponse(
     chatMessages,
     chunks,
-    chatbot.systemPrompt
+    chatbot.systemPrompt,
+    marketConfig
   );
 
   // Save assistant response on stream completion

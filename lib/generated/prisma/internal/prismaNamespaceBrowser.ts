@@ -121,6 +121,7 @@ export const ChatbotScalarFieldEnum = {
   name: 'name',
   description: 'description',
   systemPrompt: 'systemPrompt',
+  marketConfig: 'marketConfig',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

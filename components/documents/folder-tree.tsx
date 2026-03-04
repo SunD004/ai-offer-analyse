@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Folder, FolderPlus, ChevronRight, ChevronDown } from "lucide-react";
+import { Folder, FolderPlus, ChevronRight, ChevronDown, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -18,6 +18,7 @@ interface FolderTreeProps {
   selectedFolderId: string | null;
   onSelectFolder: (folderId: string | null) => void;
   onCreateFolder: (name: string, parentId: string | null) => void;
+  onDeleteFolder: (folderId: string) => void;
 }
 
 export function FolderTree({
@@ -25,6 +26,7 @@ export function FolderTree({
   selectedFolderId,
   onSelectFolder,
   onCreateFolder,
+  onDeleteFolder,
 }: FolderTreeProps) {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const [creating, setCreating] = useState(false);
@@ -58,7 +60,7 @@ export function FolderTree({
       <div key={folder.id}>
         <button
           className={cn(
-            "flex w-full items-center gap-1 rounded px-2 py-1.5 text-sm transition-colors hover:bg-muted",
+            "group/folder flex w-full items-center gap-1 rounded px-2 py-1.5 text-sm transition-colors hover:bg-muted",
             isSelected && "bg-primary/10 text-primary"
           )}
           style={{ paddingLeft: `${depth * 16 + 8}px` }}
@@ -82,8 +84,20 @@ export function FolderTree({
           )}
           <Folder className="h-4 w-4" />
           <span className="truncate">{folder.name}</span>
-          <span className="ml-auto text-xs text-muted-foreground">
-            {folder._count.documents}
+          <span className="ml-auto flex items-center gap-1">
+            <span className="text-xs text-muted-foreground">
+              {folder._count.documents}
+            </span>
+            <span
+              role="button"
+              className="rounded p-0.5 text-muted-foreground/60 opacity-0 transition-opacity hover:text-destructive group-hover/folder:opacity-100"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDeleteFolder(folder.id);
+              }}
+            >
+              <Trash2 className="h-3 w-3" />
+            </span>
           </span>
         </button>
         {isExpanded &&
