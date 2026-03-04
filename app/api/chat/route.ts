@@ -85,7 +85,8 @@ export async function POST(request: NextRequest) {
           .join("") ||
         "",
     }))
-    .filter((m: { role: "user" | "assistant"; content: string }) => m.content.length > 0);
+    .filter((m: { role: "user" | "assistant"; content: string }) => m.content.length > 0)
+    .slice(-10); // Keep last 10 messages to stay within token limits
 
   const { stream, text } = generateChatResponse(
     chatMessages,

@@ -13,8 +13,8 @@ export async function retrieveRelevantChunks(
 ): Promise<RetrievedChunk[]> {
   if (documentIds.length === 0) return [];
 
-  // Scale with document count: at least 4 chunks per document, capped at 30
-  const k = topK ?? Math.min(30, Math.max(8, documentIds.length * 4));
+  // Scale with document count: 2 chunks per document, capped at 12
+  const k = topK ?? Math.min(12, Math.max(4, documentIds.length * 2));
 
   const vectorStore = await getVectorStore();
 
