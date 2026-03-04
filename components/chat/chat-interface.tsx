@@ -36,7 +36,7 @@ export function ChatInterface({ chatbotId }: ChatInterfaceProps) {
     [chatbotId, conversationId]
   );
 
-  const { messages, sendMessage, status, setMessages } = useChat({
+  const { messages, sendMessage, status, setMessages, error } = useChat({
     transport,
     onFinish() {
       fetchConversations();
@@ -164,6 +164,11 @@ export function ChatInterface({ chatbotId }: ChatInterfaceProps) {
             )}
             {isLoading && !isWebSearching && messages[messages.length - 1]?.role === "user" && (
               <MessageBubble role="assistant" content="Thinking..." />
+            )}
+            {error && (
+              <div className="rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-2.5 text-sm text-destructive">
+                {error.message || "Une erreur s'est produite."}
+              </div>
             )}
             <div ref={scrollRef} />
           </div>

@@ -9,6 +9,17 @@ const mistral = createMistral({
 });
 
 export const WEB_SEARCH_START = "<<<WEB_SEARCH_START>>>";
+
+function formatStreamError(err: unknown): string {
+  const msg = err instanceof Error ? err.message : String(err);
+  if (msg.includes("Rate limit") || msg.includes("rate_limited") || msg.includes("429")) {
+    return "\n\n> **Erreur : limite de requêtes Mistral atteinte (429).** Attends quelques secondes et réessaie.";
+  }
+  if (msg.includes("RetryError") || msg.includes("maxRetries")) {
+    return "\n\n> **Erreur : l'API Mistral n'a pas répondu après plusieurs tentatives.** Vérifie ta clé API et réessaie.";
+  }
+  return `\n\n> **Erreur** : ${msg}`;
+}
 export const WEB_SEARCH_END = "<<<WEB_SEARCH_END>>>";
 
 export function buildContextPrompt(
@@ -122,12 +133,18 @@ export function generateChatResponse(
             controller.enqueue(encoder.encode(WEB_SEARCH_END));
           } else if (chunk.type === "error") {
             console.error(`[generate] stream error chunk:`, chunk);
+            const errMsg = formatStreamError(chunk.error);
+            fullText += errMsg;
+            controller.enqueue(encoder.encode(errMsg));
           }
         }
-        console.log(`[generate] stream done, fullText length: ${fullText.length}`);
         resolveText(fullText);
       } catch (err) {
-        rejectText(err);
+        console.error(`[generate] stream catch:`, err);
+        const errMsg = formatStreamError(err);
+        fullText += errMsg;
+        controller.enqueue(encoder.encode(errMsg));
+        resolveText(fullText);
       } finally {
         controller.close();
       }
