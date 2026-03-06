@@ -26,14 +26,14 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       {/* Mobile overlay */}
       {open && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          className="fixed inset-0 z-40 bg-black/30 lg:hidden"
           onClick={onClose}
         />
       )}
 
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-60 flex-col border-r bg-muted/30 transition-transform lg:static lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-50 flex w-60 flex-col border-r bg-background transition-transform duration-300 ease-in-out lg:static lg:translate-x-0",
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >
@@ -68,10 +68,10 @@ export function Sidebar({ open, onClose }: SidebarProps) {
                 href={item.href}
                 onClick={onClose}
                 className={cn(
-                  "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200",
                   isActive
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    ? "bg-primary/10 text-primary shadow-sm"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground hover:shadow-sm"
                 )}
               >
                 <item.icon
@@ -88,7 +88,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
 
         {/* Footer */}
         <div className="border-t px-4 py-3">
-          <p className="text-[11px] text-muted-foreground/40">RAG · Mistral · pgvector</p>
+          <p className="text-[11px] text-muted-foreground/60">RAG · Mistral · pgvector</p>
         </div>
       </aside>
     </>
