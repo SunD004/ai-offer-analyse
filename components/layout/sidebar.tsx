@@ -2,13 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FileText, Bot, X, Layers } from "lucide-react";
+import { FileText, Bot, X, Layers, ScrollText, Landmark } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
   { href: "/documents", label: "Documents", icon: FileText },
   { href: "/chatbots", label: "Chatbots", icon: Bot },
+  { href: "/appels-offres", label: "Appels d'offres", icon: ScrollText },
+  { href: "/marches-publics", label: "Marchés attribués", icon: Landmark },
 ];
 
 interface SidebarProps {
